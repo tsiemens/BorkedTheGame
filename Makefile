@@ -6,19 +6,18 @@ CC=g++
 CPP_FILES := $(wildcard src/*.cpp)
 OBJ_FILES := $(addprefix obj/,$(notdir $(CPP_FILES:.cpp=.o)))
 LD_FLAGS=
-CC_FLAGS=-W
+CC_FLAGS=-W -std=c++1y -g
 
 all: $(OUT)
 
 $(OUT): $(OBJ_FILES)
-	mkdir bin
+	@mkdir -p bin
 	$(CC) $(LD_FLAGS) $^ $(LIBS) -o bin/$@
 
 obj/%.o: src/%.cpp
-	mkdir obj
+	@mkdir -p obj
 	$(CC) $(CC_FLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OUT)
-	rm -rf obj/
-	rm -rf bin/
+	@rm -rf obj/
+	@rm -rf bin/
