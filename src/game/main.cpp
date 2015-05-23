@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "Engine.h"
+#include "engine/Engine.h"
 
 int main() {
     Egn::Engine engine( 800, 500, "My Game" );

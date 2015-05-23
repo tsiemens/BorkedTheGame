@@ -1,23 +1,42 @@
-LIBS=-lsfml-graphics -lsfml-window -lsfml-system
-OUT=thegame
+CC        := g++
+LD        := g++
 
-CC=g++
+LD_FLAGS  :=
+CC_FLAGS  := -W -std=c++1y -g
 
-CPP_FILES := $(wildcard src/*.cpp)
-OBJ_FILES := $(addprefix obj/,$(notdir $(CPP_FILES:.cpp=.o)))
-LD_FLAGS=
-CC_FLAGS=-W -std=c++1y -g
+MODULES   := engine game
+SRC_DIR   := $(addprefix src/,$(MODULES)) src
+BUILD_DIR := $(addprefix build/,$(MODULES)) build
 
-all: $(OUT)
+LIBS      := -lsfml-graphics -lsfml-window -lsfml-system
 
-$(OUT): $(OBJ_FILES)
-	@mkdir -p bin
-	$(CC) $(LD_FLAGS) $^ $(LIBS) -o bin/$@
+BINARY    := build/mygame
 
-obj/%.o: src/%.cpp
-	@mkdir -p obj
-	$(CC) $(CC_FLAGS) -c $< -o $@
+SRC       := $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.cpp))
+OBJ       := $(patsubst src/%.cpp,build/%.o,$(SRC))
+INCLUDES  := $(addprefix -I,$(SRC_DIR))
+
+vpath %.cpp $(SRC_DIR)
+
+define make-goal
+$1/%.o: %.cpp
+	$(CC) $(CC_FLAGS) $(INCLUDES) -c $$< -o $$@
+endef
+
+.PHONY: all checkdirs clean
+
+all: checkdirs $(BINARY)
+
+$(BINARY): $(OBJ)
+	$(LD) $^ -o $@ $(LIBS)
+
+
+checkdirs: $(BUILD_DIR)
+
+$(BUILD_DIR):
+	@mkdir -p $@
 
 clean:
-	@rm -rf obj/
-	@rm -rf bin/
+	@rm -rf $(BUILD_DIR)
+
+$(foreach bdir,$(BUILD_DIR),$(eval $(call make-goal,$(bdir))))
