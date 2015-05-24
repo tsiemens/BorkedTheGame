@@ -4,7 +4,7 @@
 
 namespace Egn {
 
-Engine::Engine( int windowH, int windowW, const sf::String & title)
+Engine::Engine( int windowH, int windowW, const sf::String & title )
     : entities_()
     , window_( sf::VideoMode( windowH, windowW ), title,
                sf::Style::Titlebar | sf::Style::Close ) {
@@ -24,7 +24,8 @@ Engine::addEntity( Entity * entity ) {
 void
 Engine::drawEntities() {
     for ( auto enti = entities_.begin(); enti != entities_.end(); enti++ ) {
-        sf::RenderStates renderStates = (*enti)->getSprite()->getRenderStates();
+
+        sf::RenderStates renderStates = (*enti)->getRenderStates();
         std::list< sf::Shape * > shapes = (*enti)->getSprite()->shapes();
         for ( auto shi = shapes.begin(); shi != shapes.end(); shi++ ) {
             window_.draw( **shi, renderStates );
@@ -41,8 +42,9 @@ Engine::loop() {
         while ( window_.pollEvent( event ) ) {
             if ( event.type == sf::Event::Closed ) {
                 window_.close();
+            } else {
+                eventHandler_( event );
             }
-            // TODO other events
         }
 
         window_.clear();
@@ -51,6 +53,7 @@ Engine::loop() {
 
         float duration = float( clock() - beginTime ) /  CLOCKS_PER_SEC;
         beginTime = std::clock();
+        drawCallback_( duration );
     }
 }
 
