@@ -1,21 +1,30 @@
+#ifndef EGN_SPRITE_H_
+#define EGN_SPRITE_H_
+
 #include <list>
-#include <iterator>
+#include <memory>
 #include <SFML/Graphics.hpp>
 
 namespace Egn {
 
+typedef std::shared_ptr< sf::Shape > ShapePtr;
+
 class Sprite {
 public:
+    typedef std::shared_ptr< Sprite > Ptr;
+
     Sprite( const sf::Vector2f & offset );
 
-    void addShape( sf::Shape * shape );
+    void addShape( ShapePtr shape );
 
-    const sf::RenderStates & getRenderStates() const;
+    const sf::RenderStates & getRenderStates() const { return renderStates_; }
 
-    std::list< sf::Shape * > shapes() const;
+    const std::list< ShapePtr > & shapes() const { return shapes_; };
 private:
-    std::list< sf::Shape * > _shapes;
-    sf::RenderStates _renderStates;
+    std::list< ShapePtr > shapes_;
+    sf::RenderStates renderStates_;
 };
 
 }
+
+#endif

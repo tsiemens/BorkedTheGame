@@ -1,4 +1,8 @@
+#ifndef BORK_GAME_H_
+#define BORK_GAME_H_
+
 #include "engine/Engine.h"
+#include "Player.h"
 
 namespace Bork {
 
@@ -14,7 +18,9 @@ public:
 private:
     Egn::Engine engine_;
 
-    Egn::Entity * circle_;
+    Player * player_;
 };
 
 }
+
+#endif
