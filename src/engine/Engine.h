@@ -11,10 +11,12 @@ public:
     void setFramerateLimit( unsigned int limit );
     void addEntity( Entity * entity );
     void loop();
+
 private:
+    void drawEntities();
+
     sf::RenderWindow window_;
     std::list< Entity * > entities_;
-
 };
 
 }
