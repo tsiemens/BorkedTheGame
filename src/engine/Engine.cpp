@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <chrono>
 #include <list>
 #include "Engine.h"
 
@@ -25,10 +26,10 @@ Engine::setFramerateLimit( unsigned int limit ) {
 
 void
 Engine::loop() {
-    std::clock_t beginTime = std::clock();
+    std::chrono::high_resolution_clock::time_point beginTime =
+        std::chrono::high_resolution_clock::now();
     while ( window_.isOpen() ) {
         sf::Event event;
-        std::clock_t beginTime = std::clock();
         while ( window_.pollEvent( event ) ) {
             if ( event.type == sf::Event::Closed ) {
                 window_.close();
@@ -41,9 +42,12 @@ Engine::loop() {
         renderer_->renderEntities();
         window_.display();
 
-        float duration = float( clock() - beginTime ) /  CLOCKS_PER_SEC;
-        beginTime = std::clock();
-        drawCallback_( duration );
+        std::chrono::high_resolution_clock::time_point endTime =
+            std::chrono::high_resolution_clock::now();
+        std::chrono::duration< double > dur =
+            std::chrono::duration_cast< std::chrono::duration< double > >( endTime - beginTime );
+        beginTime = endTime;
+        drawCallback_( ( float ) dur.count() );
     }
 }
 

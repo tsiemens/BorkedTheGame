@@ -1,9 +1,10 @@
 #include "MobileEntity.h"
 #include "Engine.h"
+#include <iostream>
 
 namespace Egn {
 
-const float MobileEntity::DEFAULT_SPEED = 25.f;
+const float MobileEntity::DEFAULT_SPEED = 100.f;
 
 MobileEntity::MobileEntity( Sprite::Ptr sprite )
     : Entity( sprite ) {
