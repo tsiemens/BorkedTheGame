@@ -6,10 +6,6 @@ namespace Egn {
 
 const float MobileEntity::DEFAULT_SPEED = 100.f;
 
-MobileEntity::MobileEntity( Sprite::Ptr sprite )
-    : Entity( sprite ) {
-}
-
 void
 MobileEntity::move( float secs ) {
     Engine * e = getEngine();

@@ -17,15 +17,28 @@ Game::Game() : engine_( 800, 500, "Borked: The Game" ) {
 
 void
 Game::start() {
-    sf::RectangleShape * shape = new sf::RectangleShape( sf::Vector2f( 100.f, 100.f ) );
+    sf::Vector2f squareSize( 100.f, 100.f );
+    sf::RectangleShape * shape = new sf::RectangleShape( squareSize );
     shape->setFillColor( sf::Color::Green );
 
     Egn::Sprite::Ptr sprite = engine_.spriteManager()->newSprite( "player_sprite" );
     sprite->addShape( Egn::ShapePtr( shape ) );
 
-    this->player_ = new Player( sprite );
+    this->player_ = new Player( sprite, squareSize );
 
     engine_.registerEntity( this->player_ );
+
+
+    sf::RectangleShape * oshape = new sf::RectangleShape( squareSize );
+    oshape->setFillColor( sf::Color::Blue );
+
+    Egn::Sprite::Ptr osprite = engine_.spriteManager()->newSprite( "obstacle_sprite" );
+    osprite->addShape( Egn::ShapePtr( oshape ) );
+
+    Egn::Entity * other = new Egn::Entity( osprite, squareSize );
+    other->setPosition( sf::Vector2f( 500.f, 400.f ) );
+
+    engine_.registerEntity( other );
 
     engine_.loop();
 }

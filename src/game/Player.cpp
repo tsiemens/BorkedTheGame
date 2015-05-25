@@ -3,8 +3,5 @@
 
 namespace Bork {
 
-Player::Player( Egn::Sprite::Ptr sprite )
-    : Egn::MobileEntity( sprite ) {
-}
 
 }

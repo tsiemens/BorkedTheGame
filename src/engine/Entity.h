@@ -3,6 +3,7 @@
 
 #include "Sprite.h"
 #include <SFML/Graphics.hpp>
+#include "PhysicsMesh.h"
 
 namespace Egn {
 // Avoid cycles
@@ -14,6 +15,7 @@ class Entity {
 public:
     Entity();
     Entity( Sprite::Ptr sprite );
+    Entity( Sprite::Ptr sprite, sf::Vector2f meshSize );
 
     const sf::Vector2f & getPosition() const { return this->position_; }
 
@@ -23,13 +25,18 @@ public:
 
     void setSprite( Sprite::Ptr sprite ) { this->sprite_ = sprite; }
 
+    PhysicsMesh & getPhysicsMesh() {  return this->physMesh_; }
+
     Engine * getEngine() const { return this->engine_; }
 
     sf::RenderStates getRenderStates() const;
 
+    bool intersectsMesh( const PhysicsMesh & mesh, const sf::Vector2f meshPos );
+
 private:
    Sprite::Ptr sprite_;
    sf::Vector2f position_;
+   PhysicsMesh physMesh_;
 
    Engine * engine_;
 };

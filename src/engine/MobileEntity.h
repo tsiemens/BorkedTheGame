@@ -2,6 +2,7 @@
 #define EGN_MOBILE_ENTITY_H_
 
 #include "Entity.h"
+#include <SFML/Graphics.hpp>
 
 namespace Egn {
 
@@ -9,7 +10,8 @@ class MobileEntity : public Entity {
 public:
     static const float DEFAULT_SPEED;
 
-    MobileEntity( Sprite::Ptr sprite );
+    MobileEntity( Sprite::Ptr sprite ) : Entity( sprite ) {}
+    MobileEntity( Sprite::Ptr sprite, sf::Vector2f meshSize ) : Entity( sprite, meshSize ) {}
 
     float getXMovement() const { return xMove_; }
     float getYMovement() const { return yMove_; }

@@ -15,6 +15,7 @@ Engine::Engine( int windowH, int windowW, const sf::String & title )
 }
 
 Engine::~Engine() {
+    std::cout << "Cleaning up Egn::Engine" << std::endl;
     delete physEng_;
     delete renderer_;
 }
