@@ -13,9 +13,9 @@ Renderer::renderEntities() {
     for ( auto enti = entities.begin(); enti != entities.end(); enti++ ) {
 
         sf::RenderStates renderStates = (*enti)->getRenderStates();
-        std::list< ShapePtr > shapes = (*enti)->getSprite()->shapes();
-        for ( auto shi = shapes.begin(); shi != shapes.end(); shi++ ) {
-            window_->draw( **shi, renderStates );
+        std::list< DrawablePtr > drawables = (*enti)->getSprite()->getDrawables();
+        for ( auto drawi = drawables.begin(); drawi != drawables.end(); drawi++ ) {
+            window_->draw( **drawi, renderStates );
         }
     }
 }

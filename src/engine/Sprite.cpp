@@ -9,8 +9,8 @@ Sprite::Sprite( const sf::Vector2f & offset ) {
 }
 
 void
-Sprite::addShape( ShapePtr shape ) {
-    shapes_.push_back( shape );
+Sprite::addDrawable( DrawablePtr drawable ) {
+    drawables_.push_back( drawable );
 }
 
 }

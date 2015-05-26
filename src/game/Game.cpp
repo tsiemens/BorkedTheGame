@@ -5,7 +5,7 @@
 
 namespace Bork {
 
-Game::Game() : engine_( 800, 500, "Borked: The Game" ) {
+Game::Game( const std::string binDir ) : engine_( 800, 500, "Borked: The Game" ) {
     engine_.setFramerateLimit( 60 );
     engine_.setEventHandler( [ this ] ( sf::Event event ) {
             this->handleEvent( event );
@@ -13,32 +13,34 @@ Game::Game() : engine_( 800, 500, "Borked: The Game" ) {
     engine_.setOnDrawCallback( [ this ] ( float secs ) {
             this->onFrame( secs );
         } );
+
+    spriteFactory_ = new SpriteFactory( & engine_, binDir );
 }
 
 void
 Game::start() {
     sf::Vector2f squareSize( 100.f, 100.f );
-    sf::RectangleShape * shape = new sf::RectangleShape( squareSize );
-    shape->setFillColor( sf::Color::Green );
 
-    Egn::Sprite::Ptr sprite = engine_.spriteManager()->newSprite( "player_sprite" );
-    sprite->addShape( Egn::ShapePtr( shape ) );
-
-    this->player_ = new Player( sprite, squareSize );
-
+    Egn::Sprite::Ptr playerSprite = spriteFactory_
+        ->makeRectSprite( "player_sprite", squareSize, sf::Color::Green );
+    this->player_ = new Player( playerSprite, squareSize );
     engine_.registerEntity( this->player_ );
 
 
-    sf::RectangleShape * oshape = new sf::RectangleShape( squareSize );
-    oshape->setFillColor( sf::Color::Blue );
+    Egn::Sprite::Ptr oSprite = spriteFactory_
+        ->makeRectSprite("obstacle_sprite", squareSize, sf::Color::Blue );
 
-    Egn::Sprite::Ptr osprite = engine_.spriteManager()->newSprite( "obstacle_sprite" );
-    osprite->addShape( Egn::ShapePtr( oshape ) );
-
-    Egn::Entity * other = new Egn::Entity( osprite, squareSize );
+    Egn::Entity * other = new Egn::Entity( oSprite, squareSize );
     other->setPosition( sf::Vector2f( 500.f, 400.f ) );
-
     engine_.registerEntity( other );
+
+
+    debugText_ = spriteFactory_->makeText( "Debug", 16 );
+    Egn::Sprite::Ptr textSprite = spriteFactory_->makeSprite( "debug",
+            std::dynamic_pointer_cast< sf::Drawable >( debugText_ ) );
+
+    Egn::Entity * text = new Egn::Entity( textSprite );
+    engine_.registerEntity( text );
 
     engine_.loop();
 }
@@ -66,6 +68,7 @@ Game::handleEvent( sf::Event event ) {
 void
 Game::onFrame( float secondsSinceLastFrame ) {
     this->player_->move( secondsSinceLastFrame );
+    this->debugText_->setString( "fps: " + std::to_string( 1.f / secondsSinceLastFrame ) );
 }
 
 }

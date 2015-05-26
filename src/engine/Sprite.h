@@ -4,10 +4,9 @@
 #include <list>
 #include <memory>
 #include <SFML/Graphics.hpp>
+#include "Ptr.h"
 
 namespace Egn {
-
-typedef std::shared_ptr< sf::Shape > ShapePtr;
 
 class Sprite {
 public:
@@ -15,13 +14,13 @@ public:
 
     Sprite( const sf::Vector2f & offset );
 
-    void addShape( ShapePtr shape );
+    void addDrawable( DrawablePtr shape );
 
     const sf::RenderStates & getRenderStates() const { return renderStates_; }
 
-    const std::list< ShapePtr > & shapes() const { return shapes_; };
+    const std::list< DrawablePtr > & getDrawables() const { return drawables_; };
 private:
-    std::list< ShapePtr > shapes_;
+    std::list< DrawablePtr > drawables_;
     sf::RenderStates renderStates_;
 };
 
