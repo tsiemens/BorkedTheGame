@@ -13,16 +13,23 @@ public:
     MobileEntity( Sprite::Ptr sprite ) : Entity( sprite ) {}
     MobileEntity( Sprite::Ptr sprite, sf::Vector2f meshSize ) : Entity( sprite, meshSize ) {}
 
-    float getXMovement() const { return xMove_; }
-    float getYMovement() const { return yMove_; }
+    float getXSpeed() const { return speed_.x; }
+    float getYSpeed() const { return speed_.y; }
 
-    void setXMovement( float m ) { xMove_ = m; }
-    void setYMovement( float m ) { yMove_ = m; }
+    const sf::Vector2f & getSpeed() const { return speed_; }
+
+    void setXSpeed( float m ) { speed_.x = m; }
+    void setYSpeed( float m ) { speed_.y = m; }
+
+    void setSpeed( const sf::Vector2f & speed ) { speed_ = speed; }
+
+    float getMass() const { return mass_; }
+
     void move( float secs );
 private:
-    float xMove_ = 0.f;
-    float yMove_ = 0.f;
+    sf::Vector2f speed_;
 
+    float mass_ = 1.f;
 };
 
 }

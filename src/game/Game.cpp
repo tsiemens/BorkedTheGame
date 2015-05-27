@@ -27,11 +27,12 @@ Game::start() {
     engine_.registerEntity( this->player_ );
 
 
+    sf::Vector2f floorSize( 800.f, 50.f );
     Egn::Sprite::Ptr oSprite = spriteFactory_
-        ->makeRectSprite("obstacle_sprite", squareSize, sf::Color::Blue );
+        ->makeRectSprite("obstacle_sprite", floorSize, sf::Color::Blue );
 
-    Egn::Entity * other = new Egn::Entity( oSprite, squareSize );
-    other->setPosition( sf::Vector2f( 500.f, 400.f ) );
+    Egn::Entity * other = new Egn::Entity( oSprite, floorSize );
+    other->setPosition( sf::Vector2f( 0.f, 450.f ) );
     engine_.registerEntity( other );
 
 
@@ -59,15 +60,15 @@ Game::handleEvent( sf::Event event ) {
             float x = sf::Keyboard::isKeyPressed( sf::Keyboard::Key::A ) ? -1.f : 0.f +
                      sf::Keyboard::isKeyPressed( sf::Keyboard::Key::D ) ? 1.f : 0.f;
 
-            this->player_->setYMovement( y );
-            this->player_->setXMovement( x );
+            sf::Vector2f speedAddV( x, y );
+            speedAddV *= Egn::MobileEntity::DEFAULT_SPEED;
+            this->player_->setSpeed( this->player_->getSpeed() + speedAddV );
         }
     }
 }
 
 void
 Game::onFrame( float secondsSinceLastFrame ) {
-    this->player_->move( secondsSinceLastFrame );
     this->debugText_->setString( "fps: " + std::to_string( 1.f / secondsSinceLastFrame ) );
 }
 

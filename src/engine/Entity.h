@@ -17,6 +17,9 @@ public:
     Entity( Sprite::Ptr sprite );
     Entity( Sprite::Ptr sprite, sf::Vector2f meshSize );
 
+    // Ploymorphic type
+    virtual ~Entity() {}
+
     const sf::Vector2f & getPosition() const { return this->position_; }
 
     void setPosition( const sf::Vector2f & pos ) { this->position_ = pos; }

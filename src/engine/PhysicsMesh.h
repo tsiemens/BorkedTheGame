@@ -10,8 +10,7 @@ namespace Egn {
 // represent shapes other than rectangles
 class PhysicsMesh {
 public:
-    PhysicsMesh( const sf::Vector2f size )
-        : rectSize_( size ) {};
+    PhysicsMesh( const sf::Vector2f size ) : rectSize_( size ) {};
 
     bool contains( const sf::Vector2f & meshPos, const sf::Vector2f & point );
 
@@ -22,7 +21,6 @@ private:
     sf::Rect< float > createRect( const sf::Vector2f & pos ) const;
 
     sf::Vector2f rectSize_;
-
 };
 
 }

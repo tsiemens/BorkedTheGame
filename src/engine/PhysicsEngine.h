@@ -9,8 +9,11 @@ namespace Egn {
 
 class PhysicsEngine {
 public:
+    static const float DEFAULT_GRAVITY;
+
     typedef struct WorldPhysics {
         float speedFactor = 1.f;
+        float gravityAccel = DEFAULT_GRAVITY;
     } WorldPhysics;
 
     PhysicsEngine( EntityRegistry * registry );
@@ -21,6 +24,16 @@ public:
     // The distance travelled is affected by a multiplication of the duration secs
     // and the magnitude of vec
     void moveEntity( MobileEntity * entity, float secs );
+
+    void accelerate( MobileEntity * entity, float secs, const sf::Vector2f & accelV );
+
+    void applyForce( MobileEntity * entity, float secs, const sf::Vector2f & forceV );
+
+    void moveAllMobileEntities( float secs );
+
+    void doOnAllMobileEntities( std::function< void ( MobileEntity * entity ) > func );
+
+    void applyFramePhysics( float secs );
 
 private:
     WorldPhysics world_;

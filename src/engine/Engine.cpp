@@ -48,7 +48,10 @@ Engine::loop() {
         std::chrono::duration< double > dur =
             std::chrono::duration_cast< std::chrono::duration< double > >( endTime - beginTime );
         beginTime = endTime;
-        drawCallback_( ( float ) dur.count() );
+
+        float seconds = ( float ) dur.count();
+        physEng_->applyFramePhysics( seconds );
+        drawCallback_( seconds );
     }
 }
 
