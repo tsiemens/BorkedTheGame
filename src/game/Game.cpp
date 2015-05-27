@@ -15,6 +15,7 @@ Game::Game( const std::string binDir ) : engine_( 800, 500, "Borked: The Game" )
         } );
 
     spriteFactory_ = new SpriteFactory( & engine_, binDir );
+    entityFactory_ = new EntityFactory( & engine_, spriteFactory_ );
 }
 
 void
@@ -24,17 +25,10 @@ Game::start() {
     Egn::Sprite::Ptr playerSprite = spriteFactory_
         ->makeRectSprite( "player_sprite", squareSize, sf::Color::Green );
     this->player_ = new Player( playerSprite, squareSize );
+    this->player_->setPosition( sf::Vector2f( 100, 0 ) );
     engine_.registerEntity( this->player_ );
 
-
-    sf::Vector2f floorSize( 800.f, 50.f );
-    Egn::Sprite::Ptr oSprite = spriteFactory_
-        ->makeRectSprite("obstacle_sprite", floorSize, sf::Color::Blue );
-
-    Egn::Entity * other = new Egn::Entity( oSprite, floorSize );
-    other->setPosition( sf::Vector2f( 0.f, 450.f ) );
-    engine_.registerEntity( other );
-
+    entityFactory_->makeWorld();
 
     debugText_ = spriteFactory_->makeText( "Debug", 16 );
     Egn::Sprite::Ptr textSprite = spriteFactory_->makeSprite( "debug",

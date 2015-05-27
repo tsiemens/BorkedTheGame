@@ -5,6 +5,7 @@
 #include "engine/Engine.h"
 #include "Player.h"
 #include "SpriteFactory.h"
+#include "EntityFactory.h"
 
 namespace Bork {
 
@@ -21,6 +22,7 @@ private:
     Egn::Engine engine_;
 
     SpriteFactory * spriteFactory_;
+    EntityFactory * entityFactory_;
 
     Egn::TextPtr debugText_;
     Player * player_;

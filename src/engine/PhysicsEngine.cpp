@@ -3,7 +3,7 @@
 
 namespace Egn {
 
-const float PhysicsEngine::DEFAULT_GRAVITY = 50.f;
+const float PhysicsEngine::DEFAULT_GRAVITY = 900.f;
 
 PhysicsEngine::PhysicsEngine( EntityRegistry * registry )
     : entityRegistry_( registry ) {}
