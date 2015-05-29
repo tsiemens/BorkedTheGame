@@ -11,6 +11,10 @@ public:
     Player( Egn::Sprite::Ptr sprite, sf::Vector2f meshSize )
         : Egn::MobileEntity( sprite, meshSize ) {}
 
+    bool pressedLeft = false;
+    bool pressedRight = false;
+    bool pressedUp = false;
+    bool pressedDown = false;
 private:
 };
 

@@ -25,6 +25,8 @@ public:
     // and the magnitude of vec
     void moveEntity( MobileEntity * entity, float secs );
 
+    bool checkTouchingBottom( MobileEntity * entity );
+
     void accelerate( MobileEntity * entity, float secs, const sf::Vector2f & accelV );
 
     void applyForce( MobileEntity * entity, float secs, const sf::Vector2f & forceV );

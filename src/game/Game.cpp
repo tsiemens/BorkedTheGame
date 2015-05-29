@@ -49,14 +49,10 @@ Game::handleEvent( sf::Event event ) {
              event.key.code == sf::Keyboard::Key::S ||
              event.key.code == sf::Keyboard::Key::D ) {
 
-            float y = sf::Keyboard::isKeyPressed( sf::Keyboard::Key::W ) ? -1.f : 0.f +
-                     sf::Keyboard::isKeyPressed( sf::Keyboard::Key::S ) ? 1.f : 0.f;
-            float x = sf::Keyboard::isKeyPressed( sf::Keyboard::Key::A ) ? -1.f : 0.f +
-                     sf::Keyboard::isKeyPressed( sf::Keyboard::Key::D ) ? 1.f : 0.f;
-
-            sf::Vector2f speedAddV( x, y );
-            speedAddV *= Egn::MobileEntity::DEFAULT_SPEED;
-            this->player_->setSpeed( this->player_->getSpeed() + speedAddV );
+            this->player_->pressedUp =  sf::Keyboard::isKeyPressed( sf::Keyboard::Key::W );
+            this->player_->pressedDown =  sf::Keyboard::isKeyPressed( sf::Keyboard::Key::S );
+            this->player_->pressedLeft =  sf::Keyboard::isKeyPressed( sf::Keyboard::Key::A );
+            this->player_->pressedRight =  sf::Keyboard::isKeyPressed( sf::Keyboard::Key::D );
         }
     }
 }
@@ -64,6 +60,18 @@ Game::handleEvent( sf::Event event ) {
 void
 Game::onFrame( float secondsSinceLastFrame ) {
     this->debugText_->setString( "fps: " + std::to_string( 1.f / secondsSinceLastFrame ) );
+
+    float xForce = ( this->player_->pressedRight ? 1.f : 0.f ) +
+                   ( this->player_->pressedLeft ? -1.f : 0.f );
+    this->engine_.physics()->applyForce( this->player_, secondsSinceLastFrame,
+            sf::Vector2f( xForce * 1000, 0 ) );
+
+    // Jump
+    if ( this->player_->pressedUp &&
+         this->engine_.physics()->checkTouchingBottom( this->player_ ) ) {
+
+        this->player_->setYSpeed( -500 );
+    }
 }
 
 }
