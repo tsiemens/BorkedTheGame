@@ -28,6 +28,13 @@ Game::start() {
     this->player_->setPosition( sf::Vector2f( 100, 0 ) );
     engine_.registerEntity( this->player_ );
 
+    Egn::Sprite::Ptr boxSprite = spriteFactory_
+        ->makeRectSprite( "box_sprite", squareSize, sf::Color::Red );
+    Egn::Entity * box = new Egn::Entity( boxSprite, squareSize );
+    box->setPosition( sf::Vector2f( 500, 0 ) );
+    box->setCanMove( true );
+    engine_.registerEntity( box );
+
     entityFactory_->makeWorld();
 
     debugText_ = spriteFactory_->makeText( "Debug", 16 );

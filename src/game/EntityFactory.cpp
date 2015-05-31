@@ -16,6 +16,7 @@ EntityFactory::makeWorld() {
 
     Egn::Entity * floor = new Egn::Entity( floorSprite, floorSize );
     floor->setPosition( sf::Vector2f( 0.f, 450.f ) );
+    floor->setCollisionDamping( 1.f );
     engine_->registerEntity( floor );
 
     Egn::Entity * wallL = new Egn::Entity( wallSprite, wallSize );

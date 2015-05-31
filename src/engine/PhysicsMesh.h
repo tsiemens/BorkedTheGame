@@ -17,6 +17,11 @@ public:
     bool intersects( const sf::Vector2f & meshPos, const PhysicsMesh & otherMesh,
                      const sf::Vector2f & otherPos );
 
+    float collisionAngle( const sf::Vector2f & meshPos, const PhysicsMesh & otherMesh,
+                          const sf::Vector2f & otherPos );
+
+    float collisionAngleFromCentre( const sf::Vector2f & meshPos, const PhysicsMesh & otherMesh,
+                                    const sf::Vector2f & otherPos );
 private:
     sf::Rect< float > createRect( const sf::Vector2f & pos ) const;
 

@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "EntityRegistry.h"
-#include "MobileEntity.h"
+#include "Entity.h"
 
 namespace Egn {
 
@@ -23,17 +23,19 @@ public:
     // Moves the entity in the direction specified by vec.
     // The distance travelled is affected by a multiplication of the duration secs
     // and the magnitude of vec
-    void moveEntity( MobileEntity * entity, float secs );
+    void moveEntity( Entity * entity, float secs );
 
-    bool checkTouchingBottom( MobileEntity * entity );
+    bool checkTouchingBottom( Entity * entity );
 
-    void accelerate( MobileEntity * entity, float secs, const sf::Vector2f & accelV );
+    void accelerate( Entity * entity, float secs, const sf::Vector2f & accelV );
 
-    void applyForce( MobileEntity * entity, float secs, const sf::Vector2f & forceV );
+    void applyForce( Entity * entity, float secs, const sf::Vector2f & forceV );
+
+    void collide( Entity * e1, Entity * e2 );
 
     void moveAllMobileEntities( float secs );
 
-    void doOnAllMobileEntities( std::function< void ( MobileEntity * entity ) > func );
+    void doOnAllEntities( std::function< void ( Entity * entity ) > func );
 
     void applyFramePhysics( float secs );
 
