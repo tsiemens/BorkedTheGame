@@ -18,43 +18,69 @@ PhysicsEngine::moveEntity( Entity * entity, float secs ) {
     sf::Vector2f move( entity->getXSpeed(), entity->getYSpeed() );
     move *= secs * world_.speedFactor;
 
-    sf::Vector2f newPos( entity->getPosition() + move );
-    sf::Vector2f newXOnlyPos( entity->getPosition() + sf::Vector2f( move.x, 0 ) );
-    sf::Vector2f newYOnlyPos( entity->getPosition() + sf::Vector2f( 0, move.y ) );
+    sf::Vector2f currentFurthestMove = move;
+    sf::Vector2f nextFurthest;
 
-    // TODO for now, just bail if there are collisions
-    bool canMoveX = true;
-    bool canMoveY = true;
-    sf::Vector2f adjustedSpeed = entity->getSpeed();
-
+    Entity * collisionEntity = NULL;
     const std::list< Entity * > & entities = entityRegistry_->getEntities();
     for ( auto i = entities.begin(); i != entities.end(); i++ ) {
-        if ( * i != entity && ( * i )->intersectsMesh( entity->getPhysicsMesh(), newPos ) ) {
-
-            collide( entity, * i );
-            // Can we slide at least?
-            if ( canMoveX &&
-                    ( * i )->intersectsMesh( entity->getPhysicsMesh(), newXOnlyPos ) ) {
-                canMoveX = false;
-                adjustedSpeed.x = 0;
-            } else if ( canMoveY &&
-                    ( * i )->intersectsMesh( entity->getPhysicsMesh(), newYOnlyPos ) ) {
-                canMoveY = false;
-                adjustedSpeed.y = 0;
-            } else {
-                entity->setSpeed( sf::Vector2f( 0, 0 ) );
-                return;
+        if ( * i != entity ) {
+            nextFurthest = findFurthestMove( entity, *i, currentFurthestMove );
+            if ( nextFurthest != currentFurthestMove ) {
+                currentFurthestMove = nextFurthest;
+                collisionEntity = * i;
             }
         }
     }
 
-    if ( canMoveX && canMoveY ) {
-        entity->setPosition( newPos );
-    } else if ( canMoveX ) {
-        entity->setPosition( newXOnlyPos );
-    } else if ( canMoveY ) {
-        entity->setPosition( newYOnlyPos );
+    entity->setPosition( entity->getPosition() + currentFurthestMove );
+    if ( collisionEntity != NULL ) {
+        collide( entity, collisionEntity );
+        moveEntity( entity, secs * length( move - currentFurthestMove ) / length( move ) );
     }
+}
+
+sf::Vector2f
+PhysicsEngine::findFurthestMove( const Entity * entity, const Entity * entity2,
+       const sf::Vector2f & maxMove ) {
+
+    float maxMoveLength = length( maxMove );
+    sf::Vector2f furthest(0, 0);
+    sf::Vector2f unitMove = ( maxMove / length( maxMove ) ) * entity->getMaxSimpleMove();
+    if ( length( unitMove ) < 10 ) unitMove = ( maxMove / length( maxMove ) ) * 10.f;
+    sf::Vector2f move = furthest;
+    sf::Vector2f pos;
+
+    while ( length( move ) <= maxMoveLength && furthest != maxMove ) {
+        pos = entity->getPosition() + move;
+        if ( entity2->intersectsMesh( entity->getPhysicsMesh(), pos ) ) {
+            break;
+        } else {
+            furthest = move;
+            move += unitMove;
+            if ( length( move ) > maxMoveLength ) {
+                move = maxMove;
+            }
+        }
+    }
+
+    if ( furthest == maxMove ) {
+        return maxMove;
+    }
+
+    move /= 2.f;
+
+    // 3 is a magic number right now, for precision it will try to approach.
+    for ( int i = 1; i <= 3; i++ ) {
+        pos = entity->getPosition() + move;
+        if ( entity2->intersectsMesh( entity->getPhysicsMesh(), pos ) ) {
+            move -= move / ( 2.f * i );
+        } else {
+            furthest = move;
+            move += move / ( 2.f * i );
+        }
+    }
+    return furthest;
 }
 
 bool

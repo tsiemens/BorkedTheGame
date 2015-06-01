@@ -12,16 +12,18 @@ class PhysicsMesh {
 public:
     PhysicsMesh( const sf::Vector2f size ) : rectSize_( size ) {};
 
-    bool contains( const sf::Vector2f & meshPos, const sf::Vector2f & point );
+    bool contains( const sf::Vector2f & meshPos, const sf::Vector2f & point ) const;
 
     bool intersects( const sf::Vector2f & meshPos, const PhysicsMesh & otherMesh,
-                     const sf::Vector2f & otherPos );
+                     const sf::Vector2f & otherPos ) const;
 
     float collisionAngle( const sf::Vector2f & meshPos, const PhysicsMesh & otherMesh,
-                          const sf::Vector2f & otherPos );
+                          const sf::Vector2f & otherPos ) const;
 
     float collisionAngleFromCentre( const sf::Vector2f & meshPos, const PhysicsMesh & otherMesh,
-                                    const sf::Vector2f & otherPos );
+                                    const sf::Vector2f & otherPos ) const;
+
+    float getShortestWidth() const;
 private:
     sf::Rect< float > createRect( const sf::Vector2f & pos ) const;
 

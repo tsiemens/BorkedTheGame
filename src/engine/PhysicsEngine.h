@@ -25,6 +25,9 @@ public:
     // and the magnitude of vec
     void moveEntity( Entity * entity, float secs );
 
+    sf::Vector2f findFurthestMove( const Entity * entity, const Entity * entity2,
+       const sf::Vector2f & maxMove );
+
     bool checkTouchingBottom( Entity * entity );
 
     void accelerate( Entity * entity, float secs, const sf::Vector2f & accelV );

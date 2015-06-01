@@ -5,20 +5,20 @@
 namespace Egn {
 
 bool
-PhysicsMesh::contains( const sf::Vector2f & meshPos, const sf::Vector2f & point ) {
+PhysicsMesh::contains( const sf::Vector2f & meshPos, const sf::Vector2f & point ) const {
     return createRect( meshPos ).contains( point );
 }
 
 bool
 PhysicsMesh::intersects( const sf::Vector2f & meshPos, const PhysicsMesh & otherMesh,
-                         const sf::Vector2f & otherPos ) {
+                         const sf::Vector2f & otherPos ) const {
     return createRect( meshPos ).intersects( otherMesh.createRect( otherPos ) );
 }
 
 
 float
 PhysicsMesh::collisionAngle( const sf::Vector2f & meshPos, const PhysicsMesh & otherMesh,
-                          const sf::Vector2f & otherPos ) {
+                             const sf::Vector2f & otherPos ) const {
 
     // find collision surfaces
     if ( meshPos.y + rectSize_.y <= otherPos.y ) {
@@ -41,7 +41,7 @@ PhysicsMesh::collisionAngle( const sf::Vector2f & meshPos, const PhysicsMesh & o
 
 float
 PhysicsMesh::collisionAngleFromCentre( const sf::Vector2f & meshPos, const PhysicsMesh & otherMesh,
-                          const sf::Vector2f & otherPos ) {
+                                       const sf::Vector2f & otherPos ) const {
 
     sf::Vector2f centre1( meshPos.x + ( rectSize_.x / 2 ), meshPos.y + ( rectSize_.y / 2 ) );
     sf::Vector2f centre2( otherPos.x + ( otherMesh.rectSize_.x / 2 ),
@@ -67,6 +67,11 @@ PhysicsMesh::collisionAngleFromCentre( const sf::Vector2f & meshPos, const Physi
             return M_PI + M_PI / 2;
         }
     }
+}
+
+float
+PhysicsMesh::getShortestWidth() const {
+    return std::max( rectSize_.x, rectSize_.y );
 }
 
 sf::Rect< float >

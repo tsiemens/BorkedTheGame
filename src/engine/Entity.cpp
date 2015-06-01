@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "Engine.h"
+#include "Vector.h"
 #include <iostream>
 
 namespace Egn {
@@ -22,12 +23,12 @@ Entity::getRenderStates() const {
 }
 
 bool
-Entity::intersectsMesh( const PhysicsMesh & mesh, const sf::Vector2f meshPos ) {
+Entity::intersectsMesh( const PhysicsMesh & mesh, const sf::Vector2f meshPos ) const {
     return physMesh_.intersects( position_, mesh, meshPos );
 }
 
 float
-Entity::collisionAngleWithEntity( const Entity * entity ) {
+Entity::collisionAngleWithEntity( const Entity * entity ) const {
     return physMesh_.collisionAngle( position_, entity->physMesh_, entity->position_ );
 }
 

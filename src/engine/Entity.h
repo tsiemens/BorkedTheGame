@@ -28,18 +28,21 @@ public:
 
     void setSprite( Sprite::Ptr sprite ) { this->sprite_ = sprite; }
 
-    PhysicsMesh & getPhysicsMesh() {  return this->physMesh_; }
+    const PhysicsMesh & getPhysicsMesh() const {  return this->physMesh_; }
 
     Engine * getEngine() const { return this->engine_; }
 
     sf::RenderStates getRenderStates() const;
 
-    bool intersectsMesh( const PhysicsMesh & mesh, const sf::Vector2f meshPos );
+    bool intersectsMesh( const PhysicsMesh & mesh, const sf::Vector2f meshPos ) const;
 
-    float collisionAngleWithEntity( const Entity * entity );
+    float collisionAngleWithEntity( const Entity * entity ) const;
+
+    // The max distance the entity can move before extra collision detection is necessary
+    float getMaxSimpleMove() const { return physMesh_.getShortestWidth(); }
 
     void setCanMove( bool canMove ) { canMove_ = canMove; }
-    bool canMove() { return canMove_; }
+    bool canMove() const { return canMove_; }
 
     float getXSpeed() const { return speed_.x; }
     float getYSpeed() const { return speed_.y; }
